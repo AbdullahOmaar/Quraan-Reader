@@ -1,6 +1,16 @@
-import 'package:flutter/material.dart';
 
-void main() => runApp(const MyApp());
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
+void main() {
+  runApp(
+      const MyApp()
+  );
+  WidgetsFlutterBinding.ensureInitialized();
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -177,7 +187,7 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
 ListTile buildListTile(int number) {
   return ListTile(
     onTap: (){
-      print("Taped");
+      print("Tapped");
     },
     title: Text('السورة', textAlign: TextAlign.right, style: TextStyle( fontWeight: FontWeight.bold)),
     trailing: Icon(Icons.api_rounded,color:const Color(0xFFFF1C7B7B) ),
