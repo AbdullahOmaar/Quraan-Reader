@@ -40,11 +40,15 @@ class Search extends StatefulWidget {
   State<Search> createState() => _SearchState();
 }
 
+
 class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
+          // backgroundColor: Colors.transparent,
+          bottomOpacity: 0.0,
+          elevation: 0.0,
           backgroundColor:const Color(0xFF94C2B6),
           actions: <Widget> [
                Container(
@@ -71,27 +75,29 @@ class _SearchState extends State<Search> {
           centerTitle: true,
         ),
           body: Container(
+            padding: const EdgeInsets.all(5),
             width: double.infinity,
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: Center(
-              child: TextField(
-                textAlign: TextAlign.right,
-                decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        /* Clear the search field */
-                      },
-                    ),
-                    hintText: 'بحث',
-
-                    border: InputBorder.none),
-              ),
+            height: 50,
+            decoration: const BoxDecoration(
+                color: const Color(0xFF94C2B6)
             ),
-          )
+              child:  Center(
+                child: TextField(
+                  textAlign: TextAlign.right,
+                  decoration:const InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    focusedBorder: InputBorder.none,
+                      hintText: 'بحث',
+                  ),
+                    onChanged: (keywords) {
+                      setState (() {
+                        //TODO: Retrieve results
+                      });
+                    },
+                ),
+              ),
+          ),
       );
   }
 }
