@@ -123,7 +123,7 @@ class DBHelper {
     return await db?.insert('aya', aya);
   }
 
-  Future<List?> readAllNotes() async {
+  Future<List?> readAllAya() async {
     final db = await instance.database;
 
 

@@ -7,6 +7,8 @@ import '../View_Model/create_db.dart';
 import '../View_Model/create_db.dart';
 import '../Services.dart';
 
+import '../Models/Aya.dart';
+
 import 'package:quraan_reader/Models/Utilities.dart';
 
 import 'package:csv/csv.dart';
@@ -26,8 +28,16 @@ class _ElFawaselState extends State<ElFawasel> {
 
   Future<void> readData()
   async {
-    final out=await DBHelper.instance.readAllNotes();
-    print(out);
+
+    var out=await DBHelper.instance.readAllAya();
+
+    // print(out);
+
+    List<Aya> AyaList=convertToModel(out!);
+
+    print(AyaList[6235].id);
+
+
   }
 
 

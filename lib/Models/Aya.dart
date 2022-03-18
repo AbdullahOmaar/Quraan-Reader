@@ -27,4 +27,20 @@ class Aya{
     // "ayaPhoto": ayaPhote,
   };
 
+
+
+
+
+}
+
+List<Aya> convertToModel(List<dynamic>data)
+{
+  return   List.generate(data.length, (i) {
+    return Aya(
+      id: data[i]['id'],
+      ayaNumber: data[i]['aya_number'],
+      ayaCoordinates:data[i]['aya_coordinates'],
+      // Same for the other properties
+    );
+  });
 }
