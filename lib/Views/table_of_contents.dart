@@ -95,13 +95,16 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
           ],
         ),
         body:  TabBarView(
-          controller: _tabController,
-          children: <Widget>[
+          children: [
+            // Icon(Icons.directions_car),
+            // Icon(Icons.directions_transit),
+          // controller: _tabController,
+          // children: [
             Center(
               child: const Text("الاجزاء"),
             ),
             Column(
-              children: <Widget>
+              children:
               [
                 Container(
               height: 55,
@@ -112,7 +115,7 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                 decoration: const InputDecoration(
                   prefixIcon: Icon(
                     Icons.search,
-                    color: const Color(0xFFFF1C7B7B),
+                    color:  Color(0xFFFF1C7B7B),
                   ),
                   // focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
@@ -174,6 +177,7 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
             ),
               ],
             ),
+
             // Center(
             //   child: Text("It's sunny here"),
             // ),
