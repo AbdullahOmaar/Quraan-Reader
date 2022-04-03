@@ -14,6 +14,26 @@ Future<List<List>> loadCsvData(String path) async {
 }
 
 
+Future<List<List>> loadAyatText(String path) async {
+  final _loadedData = await rootBundle.loadString(path);
+  List<List<dynamic>> ayatList=[[]];
+
+  // List<Map<String, dynamic>> allAyat;
+  // print(_loadedData.length);
+  var ayat = _loadedData.split('\n');
+  for (var line in ayat) {
+    var aya = line.split('|');
+    ayatList.add(aya);
+
+  }
+  // print(ayatList[2][0]); // Surah Number
+  // print(ayatList[2][1]); // Aya Number
+  // print(ayatList[2][2]); // Aya Text
+   return(ayatList);
+
+}
+
+
 Future<List<Map<String, dynamic>>> getData() async
 {
   String path="./assets/highlights.csv";
@@ -28,8 +48,9 @@ Future<List<Map<String, dynamic>>> getData() async
 Future<List<Map<String, dynamic>>> loadAyaTable(List<List<dynamic>> data) async
 {
 
-
-  int aya_id=1;
+  var ayatList = await  loadAyatText('assets/Ayat.txt');
+  ayatList.removeAt(0);
+  // int aya_id=1;
 
   List<dynamic> coordinates_aya=[];
 
@@ -40,6 +61,11 @@ Future<List<Map<String, dynamic>>> loadAyaTable(List<List<dynamic>> data) async
   int last_surah=data[1][7];
 
   int i=1;
+  print("DAAATAAAAA:");
+  print(data.length);
+  print("AYAAAAAT");
+  print(ayatList.length);
+
 
   while (i<data.length)
   {
@@ -69,28 +95,41 @@ Future<List<Map<String, dynamic>>> loadAyaTable(List<List<dynamic>> data) async
 
     // print(aya_id);
 
-    load_aya.add({"id": aya_id,
+    load_aya.add({
 
       "aya_number":last_aya,
       "aya_coordinates": coord,
+      // "aya_text": ayatList[i]
     });
 
-    aya_details.add([aya_id,coord,last_aya]);
+    aya_details.add([coord,last_aya]);
 
-    aya_id++;
+    // aya_id++;
 
     coordinates_aya.add(coord);
 
   }
 
-  // print(load_aya.length);
-  // //
-  // for (int k=0;k<load_aya.length;k++)
-  // {
-  //   print(load_aya[k]);
-  // }
+
+  //
+  // print("hello");
+  // print(ayatList[0]);
+  print("ANA ABL EL LOOP");
+  print(ayatList.length);
+  print(load_aya.length);
+
+  for (int k=0;k<load_aya.length;k++)
+  {
+
+    load_aya[k]['aya_text']= ayatList[k][2];
+    load_aya[k]['surah_number']= ayatList[k][0];
+  }
+  // print(load_aya[6200]);
 
   return load_aya;
 
 }
+
+
+
 

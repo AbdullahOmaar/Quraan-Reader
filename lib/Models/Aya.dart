@@ -6,9 +6,11 @@ class Aya{
   // String? surahName;
   int? ayaNumber;
   String? ayaCoordinates;
+  String? ayaText;
 
 
-  Aya({ this.ayaNumber,this.ayaCoordinates , this.id});
+
+  Aya({ this.ayaNumber,this.ayaCoordinates , this.id, this.ayaText});
 
 
   Aya.fromMap(Map map) {
@@ -16,6 +18,7 @@ class Aya{
     // surahName = map[surahName];
     ayaNumber = map[ayaNumber];
     ayaCoordinates = map[ayaCoordinates];
+    ayaText = map[ayaText];
     // ayaPhote = map[ayaPhote];
   }
 
@@ -24,6 +27,7 @@ class Aya{
     // "surah_name": surahName,
     "aya_number":ayaNumber,
     "aya_coordinates": ayaCoordinates,
+    "ayaText": ayaText
     // "ayaPhoto": ayaPhote,
   };
 

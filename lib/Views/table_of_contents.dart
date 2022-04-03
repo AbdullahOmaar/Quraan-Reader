@@ -1,9 +1,8 @@
 
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import '../View_Model/create_db.dart';
+import '../Services.dart';
+
 
 void main() {
   runApp(
@@ -42,10 +41,17 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
   ScrollController? _scrollController;
   TabController? _tabController;
 
+  check() async {
+    await  loadAyatText('assets/Ayat.txt');
+  }
 
   @override
   void initState() {
     // TODO: implement initState
+    check();
+    // DBHelper.instance.database;
+
+
     _scrollController =  ScrollController(initialScrollOffset: 5.0);
     _tabController =  TabController(length:2, vsync: this);
     super.initState();

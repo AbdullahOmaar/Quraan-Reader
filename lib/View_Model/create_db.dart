@@ -42,28 +42,30 @@ class DBHelper {
   }
 
   Future _onCreate(Database db,int version ) async {
-    await db.execute(''' CREATE TABLE surah(
-    id INTEGER PRIMARY KEY,
-    surah_name varchar(50),
-    ayas BLOB
+    await db.execute(''' CREATE TABLE surah( 
+    surah_number INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    surah_name varchar(50)
     )''' );
 
     await db.execute('''CREATE TABLE aya(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     aya_number INTEGER NOT NULL,
-    aya_coordinates varchar(1000)
+    aya_coordinates varchar(1000),
+    aya_text TEXT,
+    surah_number INTEGER
+   
     )''');  // Parse Coordinates as follows: x1,y1,x2,y2,x3,...
 
     await db.execute('''CREATE TABLE favorite(
-        id INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         aya BLOB,
-        surah_name varchar(1000),
+        surah_number INTEGER,
         aya_number INTEGER,
         page_number INTEGER,
         
         CONSTRAINT fk_surah
-          FOREIGN KEY (surah_name)
-          REFERENCES surah(surah_name),
+          FOREIGN KEY (surah_number)
+          REFERENCES surah(surah_number),
               
         CONSTRAINT fk_aya
           FOREIGN KEY (aya_number)
@@ -71,15 +73,15 @@ class DBHelper {
         )''');
 
     await db.execute('''CREATE TABLE note(
-     id INTEGER PRIMARY KEY,
-     surah_name varchar(1000),
+     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+     surah_number INTEGER,
      page_number INTEGER,
      aya_number INTEGER,
      note_text TEXT,
      
      CONSTRAINT fk_surah
-      FOREIGN KEY (surah_name)
-        REFERENCES surah(surah_name),
+      FOREIGN KEY (surah_number)
+        REFERENCES surah(surah_number),
      
      
      CONSTRAINT fk_aya
@@ -88,15 +90,15 @@ class DBHelper {
     )''');
 
     db.execute('''CREATE TABLE bookmark(
-    id INTEGER PRIMARY KEY,
-    surah_name varchar(1000),
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    surah_number varchar(50),
     aya_number INTEGER,
     page_number INTEGER,
     aya_coordinates varchar(1000),
     
    CONSTRAINT fk_surah
-    FOREIGN KEY (surah_name)
-      REFERENCES surah(surah_name),
+    FOREIGN KEY (surah_number)
+      REFERENCES surah(surah_number),
      
      
    CONSTRAINT fk_aya
@@ -109,9 +111,22 @@ class DBHelper {
 
     for (int i=0;i<data.length;i++)
       {
+        // print("ANA BA PRINT EL DATA");
         // print(data[i]);
+        // print(i);
         insertIntoAya(data[i]);
       }
+    // print(data[data.length-1]);
+    // Map<String, dynamic> d = {
+    //   "id": 2,
+    //   "aya_number":3,
+    //   "aya_coordinates": "12,12,",
+    //   "aya_text": "Try",
+    //   "surah_number": 3
+    // };
+    // // print(d);
+    // insertIntoAya(d);
+    // await loadAyatText('assets/Ayat.txt');
 
   // TODO: Write functions 3la 7asabe l queries el enti 3yzaha
   }
@@ -121,6 +136,7 @@ class DBHelper {
     Database? db =await instance.database;
 
     return await db?.insert('aya', aya);
+    
   }
 
   Future<List?> readAllAya() async {
