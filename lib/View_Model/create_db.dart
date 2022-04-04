@@ -108,14 +108,15 @@ class DBHelper {
     )''' ); // TODO: EL aya nafsha hteb2a coordinates?
 
     List<Map<String, dynamic>> data=await getData();
-
+    // Database? db =await instance.database;
     for (int i=0;i<data.length;i++)
       {
         // print("ANA BA PRINT EL DATA");
-        // print(data[i]);
         // print(i);
-        insertIntoAya(data[i]);
+        insertIntoAya(data[i],db);
       }
+
+    print("done with insert");
     // print(data[data.length-1]);
     // Map<String, dynamic> d = {
     //   "id": 2,
@@ -124,16 +125,16 @@ class DBHelper {
     //   "aya_text": "Try",
     //   "surah_number": 3
     // };
-    // // print(d);
+    // print(d);
     // insertIntoAya(d);
     // await loadAyatText('assets/Ayat.txt');
 
   // TODO: Write functions 3la 7asabe l queries el enti 3yzaha
   }
 
-  Future<int?> insertIntoAya(Map<String, dynamic> aya) async
+  Future<int?> insertIntoAya(Map<String, dynamic> aya, Database? db) async
   {
-    Database? db =await instance.database;
+
 
     return await db?.insert('aya', aya);
     
@@ -145,6 +146,7 @@ class DBHelper {
 
 
     final result = await db?.query('aya');
+    print("After read all aya");
 
     return result;
   }

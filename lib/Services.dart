@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:csv/csv.dart';
+// import 'dart:html';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 
@@ -124,6 +126,14 @@ Future<List<Map<String, dynamic>>> loadAyaTable(List<List<dynamic>> data) async
     load_aya[k]['aya_text']= ayatList[k][2];
     load_aya[k]['surah_number']= ayatList[k][0];
   }
+
+  // String csv = const ListToCsvConverter().convert(rows);
+  // new AnchorElement(href: "data:text/plain;charset=utf-8,$csv")
+  //   ..setAttribute("download", "data.csv")
+  //   ..click();
+  // print("dooone");
+
+
   // print(load_aya[6200]);
 
   return load_aya;

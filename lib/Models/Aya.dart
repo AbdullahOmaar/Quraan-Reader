@@ -7,10 +7,10 @@ class Aya{
   int? ayaNumber;
   String? ayaCoordinates;
   String? ayaText;
+  int? surahNumber;
 
 
-
-  Aya({ this.ayaNumber,this.ayaCoordinates , this.id, this.ayaText});
+  Aya({ this.ayaNumber,this.ayaCoordinates , this.id, this.ayaText, this.surahNumber});
 
 
   Aya.fromMap(Map map) {
@@ -19,6 +19,7 @@ class Aya{
     ayaNumber = map[ayaNumber];
     ayaCoordinates = map[ayaCoordinates];
     ayaText = map[ayaText];
+    surahNumber = map[surahNumber];
     // ayaPhote = map[ayaPhote];
   }
 
@@ -27,7 +28,8 @@ class Aya{
     // "surah_name": surahName,
     "aya_number":ayaNumber,
     "aya_coordinates": ayaCoordinates,
-    "ayaText": ayaText
+    "aya_text": ayaText,
+    "surah_number":surahNumber,
     // "ayaPhoto": ayaPhote,
   };
 
@@ -44,6 +46,8 @@ List<Aya> convertToModel(List<dynamic>data)
       id: data[i]['id'],
       ayaNumber: data[i]['aya_number'],
       ayaCoordinates:data[i]['aya_coordinates'],
+      ayaText: data[i]['aya_text'],
+      surahNumber: data[i]['surah_number'],
       // Same for the other properties
     );
   });
