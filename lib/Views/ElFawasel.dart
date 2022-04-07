@@ -9,11 +9,7 @@ import '../Services.dart';
 
 import '../Models/Aya.dart';
 
-import 'package:quraan_reader/Models/Utilities.dart';
 
-import 'package:csv/csv.dart';
-import 'dart:io';
-import 'dart:convert';
 
 
 class ElFawasel extends StatefulWidget {
@@ -29,7 +25,7 @@ class _ElFawaselState extends State<ElFawasel> {
   Future<void> readData()
   async {
 
-    print("Before read al aya");
+    // print("Before read al aya");
     var out=await DBHelper.instance.readAllAya();
 
     print(out);

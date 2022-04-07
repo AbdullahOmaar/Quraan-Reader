@@ -63,10 +63,10 @@ Future<List<Map<String, dynamic>>> loadAyaTable(List<List<dynamic>> data) async
   int last_surah=data[1][7];
 
   int i=1;
-  print("DAAATAAAAA:");
-  print(data.length);
-  print("AYAAAAAT");
-  print(ayatList.length);
+  // print("DAAATAAAAA:");
+  // print(data.length);
+  // print("AYAAAAAT");
+  // print(ayatList.length);
 
 
   while (i<data.length)
@@ -93,16 +93,18 @@ Future<List<Map<String, dynamic>>> loadAyaTable(List<List<dynamic>> data) async
         break;
       }
     }
-    i=i+inc_ind;
 
-    // print(aya_id);
+
+    print(data[i][4]);
 
     load_aya.add({
 
       "aya_number":last_aya,
       "aya_coordinates": coord,
+      "page_number":data[i][4],
       // "aya_text": ayatList[i]
     });
+    i=i+inc_ind;
 
     aya_details.add([coord,last_aya]);
 

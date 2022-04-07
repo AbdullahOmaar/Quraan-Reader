@@ -51,6 +51,7 @@ class DBHelper {
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     aya_number INTEGER NOT NULL,
     aya_coordinates varchar(1000),
+    page_number INTEGER,
     aya_text TEXT,
     surah_number INTEGER
    
@@ -151,6 +152,17 @@ class DBHelper {
     return result;
   }
 
+Future<List<Aya>> search(String keyword) async
+{
+  final db = await instance.database;
+  List<Map> res = await db!.rawQuery(
+      "SELECT * FROM aya WHERE aya_text LIKE '%${keyword}%'");
+  // print(res);
+  List<Aya> ayaResults = convertToModel(res);
+  return ayaResults;
+}
+
+
  }
 
 
@@ -158,14 +170,6 @@ class DBHelper {
  // TODO: Write a function that reads the data from the csv file then stores it in the tables
 
 
-  // Future<List<Surah>> getSurahs() async {
-  //   Database db = await instance.database;
-  //   var groceries = await db.query('groceries', orderBy: 'name');
-  //   List<Grocery> groceryList = groceries.isNotEmpty
-  //       ? groceries.map((c) => Grocery.fromMap(c)).toList()
-  //       : [];
-  //   return groceryList;
-  // }
 
 
 
