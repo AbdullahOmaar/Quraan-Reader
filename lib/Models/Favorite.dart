@@ -5,7 +5,7 @@ import 'dart:typed_data';
 
 class Favorite{
   int? id;
-  Uint8List? ayaPhote;  // TODO: Change if not image
+  String? ayaPhote;  // TODO: Change if not image
   String? surahName;
   int? ayaNumber;
   int? pageNumber;

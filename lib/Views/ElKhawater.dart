@@ -35,13 +35,24 @@ class _ElKhawaterCardState extends State<ElKhawaterCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.more_vert),
+                PopupMenuButton(
+                  icon: Icon(Icons.more_vert),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
 
+                    const PopupMenuItem(
+                      child: ListTile(
+                        leading: Icon(Icons.edit),
+                        title: Text('تعديل'),
+                      ),
+                    ),
 
-                  onPressed: () {
-                    setState(() {});
-                  },
+                    const PopupMenuItem(
+                      child: ListTile(
+                        leading: Icon(Icons.delete_forever_rounded),
+                        title: Text('حذف'),
+                      ),
+                    ),
+                  ],
                 ),
                 Text("صفحة 2")
               ],

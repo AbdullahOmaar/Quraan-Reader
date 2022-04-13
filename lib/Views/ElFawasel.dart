@@ -32,12 +32,14 @@ class _ElFawaselState extends State<ElFawasel> {
     print("Before read al aya");
     var out=await DBHelper.instance.readAllAya();
 
-    print(out);
+    var out2=await DBHelper.instance.readFavTable();
+
+    print(out2);
 
     List<Aya> AyaList=convertToModel(out!);
     // print("after converting to model");
   // print("Hi");
-    // print(AyaList[3215].ayaText);
+  //   print(AyaList[6235].ayaText);
 
 
   }

@@ -35,14 +35,27 @@ class _FavCardState extends State<FavCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.more_vert),
-                  
-                 
-                  onPressed: () {
-                    setState(() {});
-                  },
+                // IconButton(
+                //   icon: const Icon(Icons.more_vert),
+                //
+                //
+                //   onPressed: () {
+                //     setState(() {});
+                //   },
+                // ),
+
+                PopupMenuButton(
+                  icon: Icon(Icons.more_vert),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    const PopupMenuItem(
+                      child: ListTile(
+                        leading: Icon(Icons.delete_forever_rounded),
+                        title: Text('حذف'),
+                      ),
+                    ),
+                  ],
                 ),
+
                 Text("صفحة 2")
               ],
             ),

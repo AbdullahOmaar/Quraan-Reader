@@ -59,13 +59,13 @@ class DBHelper {
     await db.execute('''CREATE TABLE favorite(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         aya BLOB,
-        surah_number INTEGER,
+        surah_name varchar(50),
         aya_number INTEGER,
         page_number INTEGER,
         
         CONSTRAINT fk_surah
-          FOREIGN KEY (surah_number)
-          REFERENCES surah(surah_number),
+          FOREIGN KEY (surah_name)
+          REFERENCES surah(surah_name),
               
         CONSTRAINT fk_aya
           FOREIGN KEY (aya_number)
@@ -74,14 +74,14 @@ class DBHelper {
 
     await db.execute('''CREATE TABLE note(
      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-     surah_number INTEGER,
+       surah_name varchar(50),
      page_number INTEGER,
      aya_number INTEGER,
      note_text TEXT,
      
      CONSTRAINT fk_surah
-      FOREIGN KEY (surah_number)
-        REFERENCES surah(surah_number),
+      FOREIGN KEY (surah_name)
+        REFERENCES surah(surah_name),
      
      
      CONSTRAINT fk_aya
@@ -91,14 +91,14 @@ class DBHelper {
 
     db.execute('''CREATE TABLE bookmark(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    surah_number varchar(50),
+    surah_name varchar(50),
     aya_number INTEGER,
     page_number INTEGER,
     aya_coordinates varchar(1000),
     
    CONSTRAINT fk_surah
-    FOREIGN KEY (surah_number)
-      REFERENCES surah(surah_number),
+    FOREIGN KEY (surah_name)
+      REFERENCES surah(surah_name),
      
      
    CONSTRAINT fk_aya
@@ -106,6 +106,14 @@ class DBHelper {
       REFERENCES aya(aya_number)
     
     )''' ); // TODO: EL aya nafsha hteb2a coordinates?
+
+    insertIntoFav({
+      "id": 1,
+      "aya":"سبحان اللذي اسري بعبده ليلا من المسجد الحرام الي المسجد الاقصي اللذي باركنا حوله",
+      "surah_name":"الاسراء",
+      "aya_number": 4,
+      "page_number":4,
+    }, db);
 
     List<Map<String, dynamic>> data=await getData();
     // Database? db =await instance.database;
@@ -117,17 +125,7 @@ class DBHelper {
       }
 
     print("done with insert");
-    // print(data[data.length-1]);
-    // Map<String, dynamic> d = {
-    //   "id": 2,
-    //   "aya_number":3,
-    //   "aya_coordinates": "12,12,",
-    //   "aya_text": "Try",
-    //   "surah_number": 3
-    // };
-    // print(d);
-    // insertIntoAya(d);
-    // await loadAyatText('assets/Ayat.txt');
+
 
   // TODO: Write functions 3la 7asabe l queries el enti 3yzaha
   }
@@ -140,6 +138,33 @@ class DBHelper {
     
   }
 
+
+  Future<int?> insertIntoFav(Map<String, dynamic> fav, Database? db) async
+  {
+
+
+    return await db?.insert('favorite', fav);
+
+  }
+
+  Future<int?> insertIntoNote(Map<String, dynamic> note, Database? db) async
+  {
+
+
+    return await db?.insert('note', note);
+
+  }
+
+  Future<int?> insertIntoBookMark(Map<String, dynamic> bookmark, Database? db) async
+  {
+
+
+    return await db?.insert('bookmark', bookmark);
+
+  }
+
+
+
   Future<List?> readAllAya() async {
     final db = await instance.database;
 
@@ -147,6 +172,40 @@ class DBHelper {
 
     final result = await db?.query('aya');
     print("After read all aya");
+
+    return result;
+  }
+
+
+  Future<List?> readFavTable() async {
+    final db = await instance.database;
+
+
+
+    final result = await db?.query('favorite');
+    print("After read Favourite table");
+
+    return result;
+  }
+
+  Future<List?> readBookmarkTable() async {
+    final db = await instance.database;
+
+
+
+    final result = await db?.query('bookmark');
+    print("After read bookmark table");
+
+    return result;
+  }
+
+  Future<List?> readNoteTable() async {
+    final db = await instance.database;
+
+
+
+    final result = await db?.query('note');
+    print("After read note table");
 
     return result;
   }
