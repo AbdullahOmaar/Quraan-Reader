@@ -88,7 +88,7 @@ class _SearchState extends State<Search> {
     }
     else
     {
-      _results =await  DBHelper.instance.search(keyword);
+      _results =await  DBHelper.instance.searchAyas(keyword);
       // print("----------------");
       // print(_results[0].pageNumber);
       _contentNumber= _results.length;

@@ -36,7 +36,7 @@ class Table extends StatefulWidget {
 }
 
 class _TableState extends State<Table> with SingleTickerProviderStateMixin{
-  final int  _contentNumber=10;
+   int  _contentNumber=10;
   final int  _threshold=4;
    bool _loading=false;
    bool _conetntError = false;
@@ -46,6 +46,25 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
 
   getSurahs() async {
     _surahs = await DBHelper.instance.readAllSurahs();
+  }
+
+  fetchResults(String keyword) async {
+    if (keyword.isEmpty)
+    {
+      _surahs = await DBHelper.instance.readAllSurahs();
+    }
+    else
+    {
+      _surahs =await  DBHelper.instance.searchSurahs(keyword);
+      // print("----------------");
+      // print(_results[0].pageNumber);
+      _contentNumber= _surahs!.length;
+    }
+
+    setState (()   {
+      _surahs=_surahs;
+      _contentNumber= _contentNumber;
+    });
   }
 
   @override
@@ -135,8 +154,11 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                   focusedBorder: InputBorder.none,
                   hintText: 'بحث',
                 ),
-                onChanged: (keywords) {
+                onChanged: (keywords)  async {
+
+                  await fetchResults(keywords);
                   setState (() {
+
                     //TODO: Retrieve results
                   });
                 },
@@ -147,7 +169,7 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
               child: ListView.separated(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(8),
-                  itemCount: _surahs!.length,
+                  itemCount: _contentNumber,
                   shrinkWrap: true,
                   separatorBuilder: (context, index) {
                     return Divider(

@@ -17,7 +17,7 @@ class Surah{
 
 }
 
-List<Surah> convertToSurah(List<Map<String, dynamic>>? data)
+List<Surah> convertToSurah(List<Map<dynamic, dynamic>>? data)
 {
   return   List.generate(data!.length, (i) {
     return Surah.fromMap(data[i]);

@@ -50,13 +50,13 @@ class _ElKhawaterCardState extends State<ElKhawaterCard> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  "البقرة:4",
-                  style: TextStyle(color: Color(0xFF96dcdc),),
+                  "البقرة : 4",
+                  style: TextStyle(color: Color(0xFFFF1C7B7B),fontWeight: FontWeight.bold),
                 ),
                 Icon(
                   Icons.edit,
                   color: Color(0xFF96dcdc),
-                  size: 15,
+                  size: 16,
                 ),
               ],
             )

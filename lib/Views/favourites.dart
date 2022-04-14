@@ -43,15 +43,16 @@ class _FavCardState extends State<FavCard> {
                     setState(() {});
                   },
                 ),
-                Text("صفحة 2")
+                Text("صفحة 2",
+                style: TextStyle(fontSize: 14.0))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  "البقرة:4",
-                  style: TextStyle(color: Color(0xFF96dcdc),),
+                  "البقرة : 4",
+                  style: TextStyle(color: Color(0xFFFF1C7B7B),fontWeight: FontWeight.bold),
                 ),
                 Icon(
                   Icons.favorite,

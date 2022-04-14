@@ -167,7 +167,7 @@ class DBHelper {
 
   }
 
-Future<List<Aya>> search(String keyword) async
+Future<List<Aya>> searchAyas(String keyword) async
 {
   final db = await instance.database;
   List<Map> res = await db!.rawQuery(
@@ -176,6 +176,17 @@ Future<List<Aya>> search(String keyword) async
   List<Aya> ayaResults = convertToModel(res);
   return ayaResults;
 }
+
+  Future<List<Surah>> searchSurahs(String keyword) async
+  {
+    final db = await instance.database;
+    List<Map> res = await db!.rawQuery(
+        "SELECT * FROM surah WHERE surah_name LIKE '%${keyword}%'");
+    // print(res);
+    List<Surah> surahResults = convertToSurah(res);
+    return surahResults;
+  }
+
 
 
  }
