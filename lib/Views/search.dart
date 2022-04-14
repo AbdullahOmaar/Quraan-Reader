@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../View_Model/create_db.dart';
 import '../Models/Aya.dart';
+import '../Services.dart';
 
 
 void main() {
@@ -56,16 +57,25 @@ class _SearchState extends State<Search> {
   bool _contentError = false;
   ScrollController? _scrollController;
   List<Aya> _results=[];
-
-
+  //
+  //
+  duh  () async
+  {
+    // print("ANA GWA EL DUH");
+    // var out=await DBHelper.instance.readAllAya();
+    await loadSurahsNames();
+    // print(out);
+    // print("Ba3d el functioooooooooooon");
+  }
 
   @override
-  void initState() {
+  void initState()  {
     // TODO: implement initState
     // super.initState();
     DBHelper.instance.database;
     _scrollController =  ScrollController(initialScrollOffset: 5.0);
-    // readData();
+    duh();
+
 
 
   }
@@ -79,6 +89,8 @@ class _SearchState extends State<Search> {
     else
     {
       _results =await  DBHelper.instance.search(keyword);
+      // print("----------------");
+      // print(_results[0].pageNumber);
       _contentNumber= _results.length;
     }
 
@@ -229,6 +241,7 @@ class _SearchState extends State<Search> {
 
 Container buildListTile(Aya result) {
   int? page = result.pageNumber;
+  // print(page);
   return Container(
     decoration: BoxDecoration(
         color: Colors.white, // Your desired background color
@@ -245,14 +258,14 @@ Container buildListTile(Aya result) {
       leading: Text("$page صفحة",
           style: TextStyle(
               fontWeight: FontWeight.bold,
-            fontSize:.0,
+            fontSize:12.0,
           ),
     ),
       title: Row(
         mainAxisAlignment:  MainAxisAlignment.end,
           children: [
         Text(
-            'السورة',
+            result.surahName!,
             textAlign: TextAlign.right,
             style: TextStyle(
                 fontWeight: FontWeight.bold)),

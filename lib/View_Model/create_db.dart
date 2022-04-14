@@ -44,7 +44,8 @@ class DBHelper {
   Future _onCreate(Database db,int version ) async {
     await db.execute(''' CREATE TABLE surah( 
     surah_number INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    surah_name varchar(50)
+    surah_name TEXT,
+    surah_page INTEGER
     )''' );
 
     await db.execute('''CREATE TABLE aya(
@@ -53,7 +54,8 @@ class DBHelper {
     aya_coordinates varchar(1000),
     page_number INTEGER,
     aya_text TEXT,
-    surah_number INTEGER
+    surah_number INTEGER,
+    surah_name TEXT
    
     )''');  // Parse Coordinates as follows: x1,y1,x2,y2,x3,...
 
@@ -108,27 +110,17 @@ class DBHelper {
     
     )''' ); // TODO: EL aya nafsha hteb2a coordinates?
 
-    List<Map<String, dynamic>> data=await getData();
-    // Database? db =await instance.database;
-    for (int i=0;i<data.length;i++)
+    var data=await getData();
+    for (int i=0;i<data[0].length;i++)
       {
-        // print("ANA BA PRINT EL DATA");
-        // print(i);
-        insertIntoAya(data[i],db);
-      }
 
-    print("done with insert");
-    // print(data[data.length-1]);
-    // Map<String, dynamic> d = {
-    //   "id": 2,
-    //   "aya_number":3,
-    //   "aya_coordinates": "12,12,",
-    //   "aya_text": "Try",
-    //   "surah_number": 3
-    // };
-    // print(d);
-    // insertIntoAya(d);
-    // await loadAyatText('assets/Ayat.txt');
+        insertIntoAya(data[0][i],db);
+      }
+    print(data[1]);
+    print("---------------------------");
+    await insertIntoSurah(data[1],db);
+
+    print("Done with insert");
 
   // TODO: Write functions 3la 7asabe l queries el enti 3yzaha
   }
@@ -140,6 +132,15 @@ class DBHelper {
     return await db?.insert('aya', aya);
     
   }
+   insertIntoSurah(List<Map<String, dynamic>> surahs, Database? db)
+  {
+    // print("inserting suraaaaaaahs");
+    for (int i=0;i<surahs.length;i++)
+    {
+      db?.insert('surah', surahs[i]);
+    }
+    // print("done with suraaaaaaaaaaahs");
+  }
 
   Future<List?> readAllAya() async {
     final db = await instance.database;
@@ -150,6 +151,20 @@ class DBHelper {
     print("After read all aya");
 
     return result;
+  }
+
+  Future<List?> readAllSurahs() async {
+
+    final db = await instance.database;
+    var result = await db?.query('surah');
+    // print(result);
+    // print("------------");
+    // print("After read all aya");
+    List<Surah> Surahs = convertToSurah(result);
+    // print(Surahs);
+    // print("---------------");
+    return Surahs;
+
   }
 
 Future<List<Aya>> search(String keyword) async
