@@ -23,7 +23,7 @@ class _ElFawaselState extends State<ElFawasel> {
   Future<void> readData()
   async {
 
-    print("Before read al aya");
+    // print("Before read al aya");
     var out=await DBHelper.instance.readAllAya();
 
     var out2=await DBHelper.instance.readFavTable();
@@ -64,7 +64,7 @@ class _ElFawaselState extends State<ElFawasel> {
                     const Text(
                       "الفواصل",
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                       ),
                     ),
                     IconButton(
@@ -89,17 +89,17 @@ class _ElFawaselState extends State<ElFawasel> {
             tabs: [
               Text("المفضلة",
               style: TextStyle(
-                fontSize: 20
+                fontSize: 17
               ),
               ),
               Text("الفاصل",
                 style: TextStyle(
-                    fontSize: 20
+                    fontSize: 17
                 ),
               ),
               Text("الخواطر",
                 style: TextStyle(
-                    fontSize: 20
+                    fontSize: 17
                 ),
               ),
             ],

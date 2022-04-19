@@ -1,7 +1,9 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../View_Model/create_db.dart';
 import '../Services.dart';
+import '../Models/Surah.dart';
 
 
 void main() {
@@ -34,27 +36,48 @@ class Table extends StatefulWidget {
 }
 
 class _TableState extends State<Table> with SingleTickerProviderStateMixin{
-  final int  _contentNumber=10;
+   int  _contentNumber=10;
   final int  _threshold=4;
    bool _loading=false;
    bool _conetntError = false;
+   List<dynamic>? _surahs;
   ScrollController? _scrollController;
   TabController? _tabController;
 
-  check() async {
-    await  loadAyatText('assets/Ayat.txt');
+  getSurahs() async {
+    _surahs = await DBHelper.instance.readAllSurahs();
+  }
+
+  fetchResults(String keyword) async {
+    if (keyword.isEmpty)
+    {
+      _surahs = await DBHelper.instance.readAllSurahs();
+    }
+    else
+    {
+      _surahs =await  DBHelper.instance.searchSurahs(keyword);
+      // print("----------------");
+      // print(_results[0].pageNumber);
+      _contentNumber= _surahs!.length;
+    }
+
+    setState (()   {
+      _surahs=_surahs;
+      _contentNumber= _contentNumber;
+    });
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    check();
+    super.initState();
+    getSurahs();
     // DBHelper.instance.database;
 
 
     _scrollController =  ScrollController(initialScrollOffset: 5.0);
     _tabController =  TabController(length:2, vsync: this);
-    super.initState();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -132,8 +155,11 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                   focusedBorder: InputBorder.none,
                   hintText: 'بحث',
                 ),
-                onChanged: (keywords) {
+                onChanged: (keywords)  async {
+
+                  await fetchResults(keywords);
                   setState (() {
+
                     //TODO: Retrieve results
                   });
                 },
@@ -141,11 +167,18 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                 ),
 
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(8),
-                  itemCount: 15,
+                  itemCount: _contentNumber,
                   shrinkWrap: true,
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 4.0,
+                    );
+                  },
+
+
                   itemBuilder:
                       (BuildContext context, int index) {
                     if (index ==
@@ -178,7 +211,7 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                         );
                       } else {}
                     }
-                    return buildListTile(1);
+                    return buildListTile(_surahs![index]);
                   }),
             ),
               ],
@@ -194,13 +227,36 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
   }
 }
 
-ListTile buildListTile(int number) {
+ListTile buildListTile(Surah s) {
+  int surahNumber=s.surahNumber!;
+  int page = s.surahPage!;
   return ListTile(
     onTap: (){
       print("Tapped");
     },
-    title: Text('السورة', textAlign: TextAlign.right, style: TextStyle( fontWeight: FontWeight.bold)),
-    trailing: Icon(Icons.api_rounded,color:const Color(0xFFFF1C7B7B) ),
+    leading: Text("$page صفحة",
+      style: TextStyle(
+        // fontWeight: FontWeight.bold,
+        fontSize:12.0,
+        color: Color(0xFFFF1C7B7B)
+      ),
+    ),
+    title:  RichText(
+      textAlign:  TextAlign.right,
+      text:  TextSpan(
+
+        style: TextStyle(
+          fontSize: 14.0,
+          color: Colors.black,
+        ),
+        children: <TextSpan>[
+           TextSpan(text: s.surahName,  style:  TextStyle( fontSize: 17.0, fontWeight: FontWeight.bold)),
+           TextSpan(text:' $surahNumber', style:  TextStyle(fontSize: 16.0,color:Color(0xFFFF1C7B7B))),
+        ],
+      ),
+    ),
+    // title: Text(s.surahName! + '$surahNumber ', textAlign: TextAlign.right, style: TextStyle( fontWeight: FontWeight.bold)),
+    trailing: Icon(Icons.api_rounded,color:const Color(0xFFFF1C7B7B),size: 20.0, ),
   );
 }
 
