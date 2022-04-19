@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../View_Model/create_db.dart';
 import '../Services.dart';
 import '../Models/Surah.dart';
-
+import 'pages.dart';
 
 void main() {
   runApp(
@@ -211,7 +211,7 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                         );
                       } else {}
                     }
-                    return buildListTile(_surahs![index]);
+                    return buildListTile(_surahs![index],context);
                   }),
             ),
               ],
@@ -227,12 +227,14 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
   }
 }
 
-ListTile buildListTile(Surah s) {
+ListTile buildListTile(Surah s,BuildContext context) {
   int surahNumber=s.surahNumber!;
   int page = s.surahPage!;
   return ListTile(
     onTap: (){
-      print("Tapped");
+
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage(ind:page-1)));
+      print(s.surahPage);
     },
     leading: Text("$page صفحة",
       style: TextStyle(
