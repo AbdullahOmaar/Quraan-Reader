@@ -8,7 +8,7 @@ class Note{
   int? pageNumber;
   int? ayaNumber;
   String? note;
-  Aya? aya;
+  // Aya? aya;
 
 
 
@@ -29,8 +29,22 @@ class Note{
     "surah_name": surahName,
     "aya_number":ayaNumber,
     "page_number": pageNumber,
-    "note": note,
+    "note_text": note,
   };
 
 
+}
+
+List<Note> convertToModel(List<dynamic>data)
+{
+  return   List.generate(data.length, (i) {
+    return Note(
+      id: data[i]['id'],
+      note:data[i]['note_text'],
+      surahName: data[i]['surah_name'],
+      ayaNumber:data[i]['aya_number'],
+      pageNumber: data[i]['page_number'],
+      // Same for the other properties
+    );
+  });
 }

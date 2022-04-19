@@ -4,16 +4,10 @@ import 'ElFasel.dart';
 import 'favourites.dart';
 import '../View_Model/create_db.dart';
 
-import '../View_Model/create_db.dart';
-import '../Services.dart';
 
 import '../Models/Aya.dart';
 
-import 'package:quraan_reader/Models/Utilities.dart';
 
-import 'package:csv/csv.dart';
-import 'dart:io';
-import 'dart:convert';
 
 
 class ElFawasel extends StatefulWidget {

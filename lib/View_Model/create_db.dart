@@ -58,7 +58,7 @@ class DBHelper {
 
     await db.execute('''CREATE TABLE favorite(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        aya BLOB,
+        aya Text,
         surah_name varchar(50),
         aya_number INTEGER,
         page_number INTEGER,
@@ -94,7 +94,7 @@ class DBHelper {
     surah_name varchar(50),
     aya_number INTEGER,
     page_number INTEGER,
-    aya_coordinates varchar(1000),
+    aya_text Text,
     
    CONSTRAINT fk_surah
     FOREIGN KEY (surah_name)
@@ -107,9 +107,25 @@ class DBHelper {
     
     )''' ); // TODO: EL aya nafsha hteb2a coordinates?
 
+    insertIntoNote({
+      "id": 1,
+      "note_text":"تفسير",
+      "surah_name":"الاسراء",
+      "aya_number": 4,
+      "page_number":4,
+    }, db);
+
     insertIntoFav({
       "id": 1,
       "aya":"سبحان اللذي اسري بعبده ليلا من المسجد الحرام الي المسجد الاقصي اللذي باركنا حوله",
+      "surah_name":"الاسراء",
+      "aya_number": 4,
+      "page_number":4,
+    }, db);
+
+    insertIntoBookMark({
+      "id": 1,
+      "aya_text":"سبحان اللذي اسري بعبده ليلا من المسجد الحرام الي المسجد الاقصي اللذي باركنا حوله",
       "surah_name":"الاسراء",
       "aya_number": 4,
       "page_number":4,
