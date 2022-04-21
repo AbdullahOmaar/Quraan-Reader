@@ -22,20 +22,85 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: _title,
-      home: Table(),
+      home: TableOf(),
     );
   }
 }
 
 
-class Table extends StatefulWidget {
-  const Table({Key? key}) : super(key: key);
+class TableOf extends StatefulWidget {
+  const TableOf({Key? key}) : super(key: key);
 
   @override
-  State<Table> createState() => _TableState();
+  State<TableOf> createState() => _TableOfState();
 }
 
-class _TableState extends State<Table> with SingleTickerProviderStateMixin{
+
+List<String> parts =["الجزء 1",
+  "الجزء 2","الجزء 3",
+  "الجزء 4",
+  "الجزء 5",
+  "الجزء 6",
+  "الجزء 7",
+  "الجزء 8",
+  "الجزء 9",
+  "الجزء 10",
+  "الجزء 11",
+  "الجزء 12",
+  "الجزء 13",
+  "الجزء 14","الجزء 15","الجزء 16",
+  "الجزء 17",
+  "الجزء 18",
+  "الجزء 19",
+  "الجزء 20",
+  "الجزء 21",
+  "الجزء 22",
+  "الجزء 23",
+  "الجزء 24",
+  "الجزء 25",
+  "الجزء 26",
+  "الجزء 27",
+  "الجزء 28",
+  "الجزء 29",
+  "الجزء 30"
+];
+
+
+List <int> pages =[
+1,
+22,
+42,
+62,
+82,
+102,
+121,
+142,
+162,
+182,
+201,
+222,
+242,
+262,
+282,
+302,
+322,
+342,
+362,
+382,
+402,
+422,
+442,
+462,
+482,
+502,
+522,
+542,
+562,
+582
+];
+
+
+class _TableOfState extends State<TableOf> with SingleTickerProviderStateMixin{
    int  _contentNumber=0;
   final int  _threshold=4;
    bool _loading=false;
@@ -94,7 +159,50 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
       future: _futureVar ,
         builder: (context, snapshot) {
           if (snapshot.data == null) {
-            return  Icon(Icons.search);
+
+            return Scaffold(
+              appBar: AppBar(
+                  elevation: 0,
+                  backgroundColor: const Color(0xFF94C2B6),
+                  // title: const Text('الفهرس'),
+                  actions: <Widget>[
+                    Container(
+                      child: const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          "الفهرس  ",
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                          Icons.arrow_forward_sharp,
+                          color: Colors.black),
+                      //TODO: Navigate to previous page
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+              body: Image.asset('assets/app.png',  height: 600,
+                width: 600,),
+            );
+            // return  Center(
+            //
+            //   child:  Column(
+            //     children: [
+            //       Container(
+            //         height: 300,
+            //         color: Colors.white,
+            //           child:Card(child:Image.asset('./assets/Quran.JPG')),
+            //       ),
+            //     ],
+            //   )
+            // );
           }
           else {
             return DefaultTabController(
@@ -149,9 +257,22 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                     // Icon(Icons.directions_transit),
                     // controller: _tabController,
                     // children: [
-                    Center(
-                      child: const Text("الاجزاء"),
-                    ),
+                  ListView.separated(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: parts.length,
+                    shrinkWrap: true,
+
+                    itemBuilder:
+                    (BuildContext context, int index) {
+                      return buildTile(parts[index],context,index);
+                    },
+
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        height: 4.0,
+                      );
+                    }
+                  ),
                     Column(
                       children:
                       [
@@ -195,16 +316,8 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
                                   height: 4.0,
                                 );
                               },
-
-
                               itemBuilder:
                                   (BuildContext context, int index) {
-                                if (index ==
-                                    _contentNumber -
-                                        _threshold) {
-                                  print("Reached end of list");
-                                  // viewUsers();
-                                }
                                 if (index == _contentNumber) {
                                   if (_conetntError) {
                                     return Expanded(
@@ -260,7 +373,7 @@ ListTile buildListTile(Surah s,BuildContext context) {
         indx+=1;
       }
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage(ind:indx)));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage(ind:pages[indx])));
       // print(s.surahPage);
     },
     leading: Text("$page صفحة",
@@ -288,5 +401,24 @@ ListTile buildListTile(Surah s,BuildContext context) {
     trailing: Icon(Icons.api_rounded,color:const Color(0xFFFF1C7B7B),size: 20.0, ),
   );
 }
+
+
+
+ListTile buildTile(String part, BuildContext context, int index)
+{
+  return ListTile(
+    onTap: (){
+
+      // Navigator.pop(context);
+
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage(ind:pages[index])));
+      // print(s.surahPage);
+    },
+    title: Text(part, textAlign: TextAlign.right,style:  TextStyle( fontSize: 17.0, fontWeight: FontWeight.bold)),
+    trailing: Icon(Icons.workspaces_outline,color:const Color(0xFFFF1C7B7B),size: 20.0, ),
+  );
+}
+
+
 
 

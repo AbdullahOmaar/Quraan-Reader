@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'Views/ElFawasel.dart';
+import 'Views/table_of_contents.dart';
+import 'Views/search.dart';
+import 'Views/pages.dart';
+import 'Views/side_drawer.dart';
+import 'Views/ElFasel.dart';
+import 'Views/ElFawasel.dart';
+import 'Views/ElKhawater.dart';
 
 
 void main() {
@@ -15,21 +22,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const ElFawasel(),
+      title: 'Routes',
+      // Start the app with the "/" named route. In this case, the app starts
+      // on the FirstScreen widget.
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const MyApp(),
+        '/table_of_contents': (context) =>const TableOf(),
+        '/el_fawasel': (context) =>const ElFawasel(),
+        '/el_khawater': (context) =>const ElKhawater(),
+        '/side_drawer': (context) => sideDrawer(),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/search': (context) => const Search(),
+      },
     );
   }
 }

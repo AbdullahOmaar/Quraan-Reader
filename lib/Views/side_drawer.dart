@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'search.dart';
+import 'table_of_contents.dart';
+import 'ElFawasel.dart';
+import 'ElKhawater.dart';
+import 'favourites.dart';
+
+
+
 
 class sideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      // backgroundColor:const Color(0xFF94C2B6),
       child: ListView(
           children: [
             // DrawerHeader(
@@ -17,30 +26,88 @@ class sideDrawer extends StatelessWidget {
             //   ),
             // ),
             ListTile(
-              leading: Icon(Icons.list_alt, color: const Color(0xFF94C2B6)),
-              title: Text('قائمة التحميلات'),
+              leading: Icon(Icons.list_alt, color: Colors.white),
+              title: Text('الفهرس',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22
+                ),
+              ),
               onTap: (){
-                print('قائمة التحميلات');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TableOf()),
+                );
               },
             ),
+
             ListTile(
-              leading: Icon(Icons.settings,  color: const Color(0xFF94C2B6)),
-              title: Text('الإعدادات'),
+              leading: Icon(Icons.search,  color: Colors.white),
+              title: Text('بحث',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22
+                ),
+              ),
               onTap: (){
-                print('الإعدادات');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Search()),
+                );
               },
 
             ),
             ListTile(
-              title: Text('عن كتاب التفسير'),
+              leading: Icon(Icons.bookmark,  color: Colors.white),
+              title: Text('الفواصل',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22
+                ),
+              ),
               onTap: (){
-                print('عن كتاب التفسير');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ElFawasel()
+                  ),
+                );
               },
             ),
             ListTile(
-              title: Text('عن المصحف'),
+              leading: Icon(Icons.favorite,  color: Colors.white),
+              title: Text('المفضلة',
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22
+              ),
+    ),
               onTap: (){
-                print('عن المصحف');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Favourites()),
+                );
+              },
+            ),
+
+            ListTile(
+              //const Color(0xFF94C2B6)
+              leading: Icon(Icons.note,  color: Colors.white),
+              title: Text('الخواطر',
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ElKhawater(),
+                ));
               },
             ),
           ]
