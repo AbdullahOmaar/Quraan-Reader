@@ -36,22 +36,29 @@ class Table extends StatefulWidget {
 }
 
 class _TableState extends State<Table> with SingleTickerProviderStateMixin{
-   int  _contentNumber=10;
+   int  _contentNumber=0;
   final int  _threshold=4;
    bool _loading=false;
    bool _conetntError = false;
    List<dynamic>? _surahs;
   ScrollController? _scrollController;
   TabController? _tabController;
+  late Future<dynamic> _futureVar;
 
   getSurahs() async {
     _surahs = await DBHelper.instance.readAllSurahs();
+    setState(() {
+      _contentNumber=_surahs!.length;
+    });
+    return 1;
   }
 
   fetchResults(String keyword) async {
     if (keyword.isEmpty)
     {
-      _surahs = await DBHelper.instance.readAllSurahs();
+      // _surahs = await DBHelper.instance.readAllSurahs();
+      // print(_surahs!.length);
+      await getSurahs();
     }
     else
     {
@@ -64,6 +71,8 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
     setState (()   {
       _surahs=_surahs;
       _contentNumber= _contentNumber;
+      // print("CONTENT NUMBEEEEEEEEEEEEEER:");
+      // print(_contentNumber);
     });
   }
 
@@ -71,7 +80,7 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
   void initState() {
     // TODO: implement initState
     super.initState();
-    getSurahs();
+    _futureVar = getSurahs();
     // DBHelper.instance.database;
 
 
@@ -81,148 +90,160 @@ class _TableState extends State<Table> with SingleTickerProviderStateMixin{
   }
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor:const Color(0xFF94C2B6),
-          // title: const Text('الفهرس'),
-          bottom: const TabBar(
-            tabs: <Widget>[
-              Tab(
-                icon: Text("الأجزاء", style: TextStyle(color: Colors.black87,  fontWeight: FontWeight.bold)),
-              ),
-              Tab(
-                icon:  Text("السور",style:TextStyle(color: Colors.black87,  fontWeight: FontWeight.bold)),
-              ),
-            ],
-            indicatorColor: const Color(0xFFFF1C7B7B)
-          ),
-          actions: <Widget> [
-            Container(
-              child: const Padding(
-                padding:  EdgeInsets.all(16),
-                child:  Text(
-                  "الفهرس  ",
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20
+    return FutureBuilder(
+      future: _futureVar ,
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return  Icon(Icons.search);
+          }
+          else {
+            return DefaultTabController(
+              initialIndex: 1,
+              length: 2,
+              child: Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  backgroundColor: const Color(0xFF94C2B6),
+                  // title: const Text('الفهرس'),
+                  bottom: const TabBar(
+                      tabs: <Widget>[
+                        Tab(
+                          icon: Text("الأجزاء", style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold)),
+                        ),
+                        Tab(
+                          icon: Text("السور", style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                      indicatorColor: const Color(0xFFFF1C7B7B)
                   ),
+                  actions: <Widget>[
+                    Container(
+                      child: const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          "الفهرس  ",
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                          Icons.arrow_forward_sharp,
+                          color: Colors.black),
+                      //TODO: Navigate to previous page
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+                body: TabBarView(
+                  children: [
+                    // Icon(Icons.directions_car),
+                    // Icon(Icons.directions_transit),
+                    // controller: _tabController,
+                    // children: [
+                    Center(
+                      child: const Text("الاجزاء"),
+                    ),
+                    Column(
+                      children:
+                      [
+                        Container(
+                          height: 55,
+                          color: const Color(0xFF94C2B6),
+                          padding: const EdgeInsets.all(6),
+                          child: TextFormField(
+                            textAlign: TextAlign.right,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Color(0xFFFF1C7B7B),
+                              ),
+                              // focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              fillColor: Colors.white,
+                              filled: true,
+                              focusedBorder: InputBorder.none,
+                              hintText: 'بحث',
+                            ),
+                            onChanged: (keywords) async {
+                              await fetchResults(keywords);
+                              setState(() {
+                                //TODO: Retrieve results
+                              });
+                            },
+                          ),
+                        ),
+
+                        Expanded(
+                          child: ListView.separated(
+                              controller: _scrollController,
+                              padding: const EdgeInsets.all(8),
+                              itemCount: _contentNumber,
+                              shrinkWrap: true,
+                              separatorBuilder: (context, index) {
+                                return Divider(
+                                  height: 4.0,
+                                );
+                              },
+
+
+                              itemBuilder:
+                                  (BuildContext context, int index) {
+                                if (index ==
+                                    _contentNumber -
+                                        _threshold) {
+                                  print("Reached end of list");
+                                  // viewUsers();
+                                }
+                                if (index == _contentNumber) {
+                                  if (_conetntError) {
+                                    return Expanded(
+                                      // height: 50,
+                                      // width: 100,
+                                      child: Center(
+                                          child: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                _loading = true;
+                                                _conetntError = false;
+                                                print("Error");
+                                                // viewUsers();
+                                              });
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(5),
+                                              child: Text(
+                                                  "Error while loading photos, tap to try again"),
+                                            ),
+                                          )),
+                                    );
+                                  } else {}
+                                }
+                                return buildListTile(_surahs![index], context);
+                              }),
+                        ),
+                      ],
+                    ),
+
+                    // Center(
+                    //   child: Text("It's sunny here"),
+                    // ),
+                  ],
                 ),
               ),
-            ),
-            IconButton(
-              icon: const Icon(
-                  Icons.arrow_forward_sharp,
-                  color: Colors.black),
-              //TODO: Navigate to previous page
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        ),
-        body:  TabBarView(
-          children: [
-            // Icon(Icons.directions_car),
-            // Icon(Icons.directions_transit),
-          // controller: _tabController,
-          // children: [
-            Center(
-              child: const Text("الاجزاء"),
-            ),
-            Column(
-              children:
-              [
-                Container(
-              height: 55,
-              color:const Color(0xFF94C2B6),
-              padding: const EdgeInsets.all(6),
-              child:  TextFormField(
-                textAlign: TextAlign.right,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color:  Color(0xFFFF1C7B7B),
-                  ),
-                  // focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  fillColor: Colors.white,
-                  filled: true,
-                  focusedBorder: InputBorder.none,
-                  hintText: 'بحث',
-                ),
-                onChanged: (keywords)  async {
-
-                  await fetchResults(keywords);
-                  setState (() {
-
-                    //TODO: Retrieve results
-                  });
-                },
-              ),
-                ),
-
-            Expanded(
-              child: ListView.separated(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(8),
-                  itemCount: _contentNumber,
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      height: 4.0,
-                    );
-                  },
-
-
-                  itemBuilder:
-                      (BuildContext context, int index) {
-                    if (index ==
-                        _contentNumber -
-                    _threshold) {
-                      print("Reached end of list");
-                      // viewUsers();
-                    }
-                    if (index == _contentNumber) {
-                      if (_conetntError) {
-                        return Expanded(
-                          // height: 50,
-                          // width: 100,
-                          child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _loading = true;
-                                    _conetntError = false;
-                                     print("Error");
-                                    // viewUsers();
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Text(
-                                      "Error while loading photos, tap to try again"),
-                                ),
-                              )),
-                        );
-                      } else {}
-                    }
-                    return buildListTile(_surahs![index],context);
-                  }),
-            ),
-              ],
-            ),
-
-            // Center(
-            //   child: Text("It's sunny here"),
-            // ),
-          ],
-        ),
-      ),
+            );
+          }
+        },
     );
   }
 }
@@ -232,9 +253,15 @@ ListTile buildListTile(Surah s,BuildContext context) {
   int page = s.surahPage!;
   return ListTile(
     onTap: (){
+      int indx=page-1;
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage(ind:page-1)));
-      print(s.surahPage);
+      if (page>553)
+      {
+        indx+=1;
+      }
+
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage(ind:indx)));
+      // print(s.surahPage);
     },
     leading: Text("$page صفحة",
       style: TextStyle(
@@ -261,4 +288,5 @@ ListTile buildListTile(Surah s,BuildContext context) {
     trailing: Icon(Icons.api_rounded,color:const Color(0xFFFF1C7B7B),size: 20.0, ),
   );
 }
+
 

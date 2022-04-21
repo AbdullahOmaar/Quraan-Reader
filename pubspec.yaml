@@ -55,6 +55,7 @@ dev_dependencies:
   scroll_to_index: ^2.1.1
 
   scrollable_positioned_list: ^0.2.3
+  positioned_tap_detector_2: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

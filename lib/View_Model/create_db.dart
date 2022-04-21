@@ -272,9 +272,37 @@ Future<List<Aya>> searchAyas(String keyword) async
     return surahResults;
   }
 
+  Future<List<Aya>> getAyasInPage(int page) async
+  {
+    final db = await instance.database;
+    List<Map> res = await db!.rawQuery(
+        "SELECT * FROM surah WHERE page_number='$page'");
+    // print(res);
+    List<Aya> ayaResults = convertToModel(res);
+    return ayaResults;
+  }
+
+
+  Future<List?> readAllAyaInPage(int pageNumb) async {
+    final db = await instance.database;
+
+    final result = await db?.query('aya',columns: ["id",
+      "aya_number",
+      "aya_coordinates",
+      " page_number",
+      "aya_text",
+      "surah_number",
+      "surah_name"],where: ' page_number= $pageNumb');
+    print("After read all aya");
+
+    return result;
+  }
 
 
  }
+
+
+
 
 
 

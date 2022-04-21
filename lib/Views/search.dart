@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../View_Model/create_db.dart';
 import '../Models/Aya.dart';
 import '../Services.dart';
+import 'pages.dart';
 
 
 void main() {
@@ -229,7 +230,7 @@ class _SearchState extends State<Search> {
                           );
                         } else {}
                       }
-                      return buildListTile(_results[index]);
+                      return buildListTile(_results[index],context);
                     }),
               ),
             ],
@@ -239,7 +240,7 @@ class _SearchState extends State<Search> {
 }
 
 
-Container buildListTile(Aya result) {
+Container buildListTile(Aya result,BuildContext context) {
   int? page = result.pageNumber;
   // print(page);
   return Container(
@@ -253,6 +254,17 @@ Container buildListTile(Aya result) {
     child: ListTile(
       onTap: (){
         //TODO: Navigate to Aya page
+        int indx=page!-1;
+
+        if (page>553)
+        {
+          indx+=1;
+        }
+
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage(ind:indx)));
+
+
+
         print("Tapped");
       },
       leading: Text("$page صفحة",
