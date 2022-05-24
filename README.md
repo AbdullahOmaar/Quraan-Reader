@@ -1,2 +1,2 @@
-A Digital Quraan Reading Using Flutter.
+A Digital Quraan-reader Using Flutter.
 
