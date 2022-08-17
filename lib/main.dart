@@ -23,12 +23,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Routes',
+      home: MyHomePage(ind: 1),
       // Start the app with the "/" named route. In this case, the app starts
       // on the FirstScreen widget.
-      initialRoute: '/',
+      //initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const MyApp(),
+        //'/': (context) => const MyApp(),
         '/table_of_contents': (context) =>const TableOf(),
         '/el_fawasel': (context) =>const ElFawasel(),
         '/el_khawater': (context) =>const ElKhawater(),
